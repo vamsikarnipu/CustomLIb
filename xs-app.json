@@ -1,0 +1,12 @@
+{
+  "welcomeFile": "/index.html",
+  "routes": [
+    {
+      "source": "^/destinations/mathbasics-library/(.*)$",
+      "destination": "mathbasics-library",
+      "target": "/$1",
+      "authenticationType": "none"
+    }
+  ]
+}
+
