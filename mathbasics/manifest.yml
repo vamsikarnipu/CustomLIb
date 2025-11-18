@@ -1,0 +1,8 @@
+applications:
+  - name: mathbasics-library
+    path: dist
+    buildpacks:
+      - staticfile_buildpack
+    memory: 64M
+    disk_quota: 128M
+

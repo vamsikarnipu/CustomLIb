@@ -1,0 +1,16 @@
+specVersion: "4.0"
+metadata:
+  name: mathbasics
+type: library
+resources:
+  configuration:
+    paths:
+      src: dist/resources/mathbasics/
+      test: dist/test-resources/mathbasics/
+framework:
+  name: SAPUI5
+  version: 1.142.1
+  libraries:
+    - name: sap.ui.core
+    - name: themelib_sap_horizon
+    - name: themelib_sap_fiori_3

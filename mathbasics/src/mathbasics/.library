@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<library xmlns="http://www.sap.com/sap.ui.library.xsd">
+	<name>mathbasics</name>
+	<vendor>vamsikarnipu</vendor>
+	<version>${version}</version>
+	<copyright>${copyright}</copyright>
+	<title>mathbasics</title>
+	<documentation>Some description about mathbasics</documentation>
+	<dependencies>
+		<dependency>
+			<libraryName>sap.ui.core</libraryName>
+		</dependency>
+	</dependencies>
+</library>
