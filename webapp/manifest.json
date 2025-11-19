@@ -47,17 +47,11 @@
   },
   "sap.ui5": {
     "flexEnabled": true,
-    "resourceRoots": {
-      "mathbasics": "/destinations/mathbasics-library/resources/mathbasics/"
-    },
     "dependencies": {
       "minUI5Version": "1.142.1",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {},
-        "mathbasics": {
-          "lazy": false
-        }
+        "sap.ui.core": {}
       }
     },
     "contentDensities": {

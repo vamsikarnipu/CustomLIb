@@ -13,11 +13,17 @@ sap.ui.define([
     },
 
     init: function () {
-      // Library loading is handled declaratively in manifest.json
-      // FLP reads manifest.json BEFORE Component.js runs
-      // resourceRoots tells FLP where to find the library
-      // lazy: false ensures library loads before views are rendered
-      // No manual loading needed - SAP-approved FLP method
+      // CRITICAL: Load library BEFORE base init (for FLP)
+      // FLP reads manifest.json and tries to load libraries declared there
+      // Since we removed mathbasics from manifest.json to prevent CDN loading,
+      // we must load it here BEFORE base init runs
+      var oCore = sap.ui.getCore();
+      
+      // Load library if not already loaded
+      // loadLibrary automatically registers the resource root
+      if (!oCore.getLoadedLibraries()["mathbasics"]) {
+        oCore.loadLibrary("mathbasics", "/destinations/mathbasics-library/resources/mathbasics");
+      }
 
       // Proceed with normal component initialization
       UIComponent.prototype.init.apply(this, arguments);
