@@ -13,14 +13,20 @@ sap.ui.define([
     },
 
     init: function () {
-      // --- Load the custom library BEFORE base init (CRITICAL for FLP) ---
-      // FLP reads manifest.json first and tries to load libraries before Component.js runs
-      // We must load the library here BEFORE calling base init to prevent FLP from trying to load from wrong location
+      // --- CRITICAL: Register resource root BEFORE base init (for FLP) ---
+      // FLP reads manifest.json and tries to load libraries BEFORE Component.js init runs
+      // We must register the resource root IMMEDIATELY so FLP knows where to find the library
+      var oCore = sap.ui.getCore();
       
-      // Load library via destination - works for both FLP and HTML5 App Repo
-      // The destination route in xs-app.json will forward /destinations/mathbasics-library/... to the actual library URL
-      if (!sap.ui.getCore().getLoadedLibraries()["mathbasics"]) {
-        sap.ui.getCore().loadLibrary("mathbasics", "/destinations/mathbasics-library/resources/mathbasics");
+      // Register resource root FIRST (before any library loading attempts)
+      // This tells UI5 where to find mathbasics library files
+      if (!oCore.getResourceRoots()["mathbasics"]) {
+        oCore.registerResourceRoot("mathbasics", "/destinations/mathbasics-library/resources/mathbasics/");
+      }
+      
+      // Load library if not already loaded
+      if (!oCore.getLoadedLibraries()["mathbasics"]) {
+        oCore.loadLibrary("mathbasics", "/destinations/mathbasics-library/resources/mathbasics");
       }
 
       // --- Proceed with normal component initialization ---

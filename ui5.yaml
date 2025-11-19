@@ -15,6 +15,14 @@ server:
             - /resources
             - /test-resources
           url: https://ui5.sap.com
+        backend:
+          # Proxy for mathbasics-library destination (for local testing)
+          # This allows local testing with /destinations/mathbasics-library/... path
+          - path: /destinations/mathbasics-library
+            url: https://mathbasics-library.cfapps.us10-001.hana.ondemand.com
+            # The proxy automatically strips /destinations/mathbasics-library prefix
+            # So /destinations/mathbasics-library/resources/mathbasics/library.js
+            # becomes https://mathbasics-library.cfapps.us10-001.hana.ondemand.com/resources/mathbasics/library.js
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
