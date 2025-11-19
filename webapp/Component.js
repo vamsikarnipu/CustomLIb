@@ -13,21 +13,15 @@ sap.ui.define([
     },
 
     init: function () {
-      // --- Map and load the custom library BEFORE base init ---
-      // Detect BAS vs FLP/Central AppRouter. In BAS preview URLs usually contain "studio".
-      var isBAS = typeof location !== "undefined" && location.host && location.host.indexOf("studio") > -1;
-
-      // Base path for the mathbasics library:
-      //  - In FLP / Central AppRouter: use destination route to your CF app
-      //  - In BAS: either use mockDestinations (same destination path) or a local copy under webapp/lib/mathbasics
-      var basePath = isBAS
-        ? "/destinations/mathbasics-library/resources/mathbasics/" // if you configured BAS mockDestinations
-        // If you prefer a local copy in BAS, change to: "./lib/mathbasics/"
-        : "/destinations/mathbasics-library/resources/mathbasics/";
-
-      // Tell UI5 where to load the custom library from (namespace must match your library.js initLibrary name)
-      // e.g., sap.ui.getCore().initLibrary({ name: "mathbasics", ... })
-      sap.ui.getCore().loadLibrary("mathbasics", basePath);
+      // --- Load the custom library BEFORE base init (CRITICAL for FLP) ---
+      // FLP reads manifest.json first and tries to load libraries before Component.js runs
+      // We must load the library here BEFORE calling base init to prevent FLP from trying to load from wrong location
+      
+      // Load library via destination - works for both FLP and HTML5 App Repo
+      // The destination route in xs-app.json will forward /destinations/mathbasics-library/... to the actual library URL
+      if (!sap.ui.getCore().getLoadedLibraries()["mathbasics"]) {
+        sap.ui.getCore().loadLibrary("mathbasics", "/destinations/mathbasics-library/resources/mathbasics");
+      }
 
       // --- Proceed with normal component initialization ---
       UIComponent.prototype.init.apply(this, arguments);
