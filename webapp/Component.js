@@ -13,14 +13,19 @@ sap.ui.define([
     },
 
     init: function () {
-      // --- CRITICAL: Load library BEFORE base init (for FLP) ---
-      // FLP reads manifest.json and tries to load libraries BEFORE Component.js init runs
-      // We must load the library IMMEDIATELY so FLP knows where to find it
-      // For HTML5-Repo apps, destination must be configured at SUBACCOUNT level (not app level)
-      // Launchpad's app-router will resolve /destinations/mathbasics-library/... path
-      sap.ui.getCore().loadLibrary("mathbasics", "/destinations/mathbasics-library/resources/mathbasics");
+      // --- Register resource root BEFORE base init (required for FLP) ---
+      // FLP reads manifest.json and tries to load libraries BEFORE Component.js runs
+      // We must register the resource root IMMEDIATELY so FLP knows where to find the library
+      // manifest.json declares the library dependency, but resource root must be registered here
+      var oCore = sap.ui.getCore();
+      
+      // Register resource root - tells UI5 where to find mathbasics library files
+      // This must be done BEFORE base init so library can be loaded from manifest.json
+      // Safe to call multiple times - will just update if already registered
+      oCore.registerResourceRoot("mathbasics", "/destinations/mathbasics-library/resources/mathbasics/");
 
       // --- Proceed with normal component initialization ---
+      // manifest.json will handle loading the library (declared in dependencies)
       UIComponent.prototype.init.apply(this, arguments);
 
       // set the device model

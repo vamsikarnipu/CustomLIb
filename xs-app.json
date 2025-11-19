@@ -6,7 +6,7 @@
       "source": "^/destinations/mathbasics-library/(.*)$",
       "destination": "mathbasics-library",
       "target": "/$1",
-      "authenticationType": "none",
+      "authenticationType": "xsuaa",
       "csrfProtection": false
     },
     {
