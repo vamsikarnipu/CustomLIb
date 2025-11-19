@@ -13,19 +13,22 @@ sap.ui.define([
     },
 
     init: function () {
-      // --- Register resource root BEFORE base init (required for FLP) ---
+      // --- CRITICAL: Load library BEFORE base init (required for FLP) ---
       // FLP reads manifest.json and tries to load libraries BEFORE Component.js runs
-      // We must register the resource root IMMEDIATELY so FLP knows where to find the library
-      // manifest.json declares the library dependency, but resource root must be registered here
+      // If library is in manifest.json, FLP tries to load from default location (sapui5.hana.ondemand.com)
+      // Solution: Remove library from manifest.json and load it directly here
+      // This ensures library loads from destination path, not default UI5 CDN
       var oCore = sap.ui.getCore();
       
-      // Register resource root - tells UI5 where to find mathbasics library files
-      // This must be done BEFORE base init so library can be loaded from manifest.json
-      // Safe to call multiple times - will just update if already registered
+      // Register resource root FIRST - tells UI5 where to find mathbasics library files
       oCore.registerResourceRoot("mathbasics", "/destinations/mathbasics-library/resources/mathbasics/");
+      
+      // Load library directly with destination path - prevents FLP from loading from wrong location
+      // This must be done BEFORE base init so library is available when Component.js initializes
+      // loadLibrary() is safe to call multiple times - checks internally if already loaded
+      oCore.loadLibrary("mathbasics", "/destinations/mathbasics-library/resources/mathbasics");
 
       // --- Proceed with normal component initialization ---
-      // manifest.json will handle loading the library (declared in dependencies)
       UIComponent.prototype.init.apply(this, arguments);
 
       // set the device model
