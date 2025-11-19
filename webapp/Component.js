@@ -16,7 +16,8 @@ sap.ui.define([
       // --- CRITICAL: Load library BEFORE base init (for FLP) ---
       // FLP reads manifest.json and tries to load libraries BEFORE Component.js init runs
       // We must load the library IMMEDIATELY so FLP knows where to find it
-      // loadLibrary is safe to call multiple times - checks internally if already loaded
+      // For HTML5-Repo apps, destination must be configured at SUBACCOUNT level (not app level)
+      // Launchpad's app-router will resolve /destinations/mathbasics-library/... path
       sap.ui.getCore().loadLibrary("mathbasics", "/destinations/mathbasics-library/resources/mathbasics");
 
       // --- Proceed with normal component initialization ---

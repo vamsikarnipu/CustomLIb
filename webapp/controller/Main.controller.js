@@ -1,7 +1,8 @@
 sap.ui.define([
+	"sap/ui/core/mvc/Controller",
 	"sap/m/MessageBox",
 	"mathbasics/BasicMath"
-], function (MessageBox, BasicMath)  {
+], function (Controller, MessageBox, BasicMath)  {
     "use strict";
 
     return Controller.extend("project3.controller.Main", {
